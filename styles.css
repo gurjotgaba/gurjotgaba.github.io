@@ -301,3 +301,54 @@
     font-weight:700;
     color:#8B1E2D;
 }
+
+/* =========================================================
+   SUPERVISION SECTION — SIMPLE LABELS AND MASTER'S CARD
+   ========================================================= */
+
+.supervision-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.supervision-type {
+    color: var(--red);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.masters-supervision-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin-top: 28px;
+    margin-bottom: 20px;
+}
+
+.masters-supervision-card h3 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 1.15rem;
+}
+
+.masters-supervision-card .show-students {
+    flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+    .masters-supervision-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
