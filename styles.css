@@ -296,3 +296,8 @@
     outline-offset: 5px;
     border-radius: 12px;
 }
+
+.author-me{
+    font-weight:700;
+    color:#8B1E2D;
+}
