@@ -278,3 +278,21 @@
         display: none;
     }
 }
+
+/* Make the complete career timeline card clickable */
+.career-card-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.career-card-link:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 5px;
+    border-radius: 12px;
+}
