@@ -47,6 +47,14 @@ if (awardModal) {
         const description = card.querySelector('.award-showcase-content > p');
         const links = card.querySelector('.link-row');
 
+        modalImage.hidden = false;
+
+    const modalPdf = document.querySelector('#award-modal-pdf');
+
+    if (modalPdf) {
+        modalPdf.hidden = true;
+        modalPdf.src = '';
+    }
         modalImage.src = image.src;
         modalImage.alt = image.alt;
 
@@ -97,4 +105,104 @@ if (awardModal) {
             awardModal.close();
         }
     });
+}
+
+/* =========================================================
+   CERTIFICATIONS — USE EXISTING AWARDS POPUP
+   ========================================================= */
+
+if (awardModal) {
+
+    const certificationCards =
+        document.querySelectorAll('.certification-showcase-card');
+
+    const awardModalImage =
+        document.querySelector('#award-modal-image');
+
+    const awardModalPdf =
+        document.querySelector('#award-modal-pdf');
+
+    const awardModalYear =
+        document.querySelector('#award-modal-year');
+
+    const awardModalTitle =
+        document.querySelector('#award-modal-title');
+
+    const awardModalDescription =
+        document.querySelector('#award-modal-description');
+
+    const awardModalLinks =
+        document.querySelector('#award-modal-links');
+
+
+    function openCertificationModal(card) {
+
+        const year =
+            card.querySelector('time');
+
+        const title =
+            card.querySelector('h3');
+
+        const description =
+            card.querySelector('.certification-showcase-content > p');
+
+        const certificateFile =
+            card.querySelector('.certificate-file');
+
+        const pdf =
+            certificateFile
+                ? certificateFile.dataset.pdf
+                : '';
+
+
+        /* Hide award image */
+        awardModalImage.hidden = true;
+        awardModalImage.src = '';
+
+
+        /* Show certificate PDF */
+        awardModalPdf.hidden = false;
+        awardModalPdf.src =
+            pdf + '#page=1&view=FitH';
+
+
+        awardModalYear.textContent =
+            year ? year.textContent : '';
+
+        awardModalTitle.textContent =
+            title ? title.textContent : '';
+
+        awardModalDescription.textContent =
+            description ? description.textContent : '';
+
+
+        /* No external links required */
+        awardModalLinks.innerHTML = '';
+
+
+        awardModal.showModal();
+    }
+
+
+    certificationCards.forEach(function(card) {
+
+        card.addEventListener('click', function() {
+            openCertificationModal(card);
+        });
+
+
+        card.addEventListener('keydown', function(event) {
+
+            if (event.key === 'Enter' ||
+                event.key === ' ') {
+
+                event.preventDefault();
+
+                openCertificationModal(card);
+            }
+
+        });
+
+    });
+
 }
