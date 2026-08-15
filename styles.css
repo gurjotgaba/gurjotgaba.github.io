@@ -482,3 +482,127 @@
         height: 210px;
     }
 }
+
+/* =========================================================
+   AWARDS POPUP
+   ========================================================= */
+
+.awards-honours .award-showcase-card {
+    cursor: pointer;
+}
+
+.awards-honours .award-showcase-card:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 4px;
+}
+
+.award-modal {
+    width: min(1050px, calc(100% - 40px));
+    max-height: 88vh;
+    padding: 0;
+    border: 0;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 24px 80px rgba(8, 30, 52, .25);
+}
+
+.award-modal::backdrop {
+    background: rgba(8, 27, 45, .72);
+}
+
+.award-modal-layout {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    min-height: 500px;
+}
+
+.award-modal-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    background: #f3f6f8;
+}
+
+.award-modal-media img {
+    display: block;
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.award-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 46px 38px;
+}
+
+.award-modal-content h2 {
+    margin: 6px 0 18px;
+    color: var(--ink);
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.award-modal-content > p:not(.kicker) {
+    color: #66788c;
+    line-height: 1.7;
+}
+
+.award-modal-content .link-row {
+    margin-top: 22px;
+}
+
+.award-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    z-index: 5;
+
+    width: 42px;
+    height: 42px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: var(--ink);
+
+    font-size: 1.7rem;
+    cursor: pointer;
+
+    box-shadow: 0 4px 16px rgba(8, 30, 52, .14);
+}
+
+.award-modal-close:hover {
+    color: var(--red);
+}
+
+@media (max-width: 760px) {
+
+    .award-modal {
+        width: calc(100% - 24px);
+        max-height: 92vh;
+        overflow-y: auto;
+    }
+
+    .award-modal-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .award-modal-media {
+        min-height: 260px;
+        padding: 20px;
+    }
+
+    .award-modal-media img {
+        max-height: 45vh;
+    }
+
+    .award-modal-content {
+        padding: 28px 24px 32px;
+    }
+}
