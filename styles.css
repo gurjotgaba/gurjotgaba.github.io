@@ -352,3 +352,39 @@
         align-items: flex-start;
     }
 }
+
+/* =========================================================
+   PH.D. STUDENT PROFILE
+   Only affects the Ph.D. supervision card
+   ========================================================= */
+
+.phd-profile {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.phd-student-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+}
+
+.phd-student-info h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 720px) {
+    .phd-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .phd-student-photo {
+        width: 110px;
+        height: 110px;
+    }
+}
