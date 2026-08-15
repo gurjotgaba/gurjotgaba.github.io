@@ -733,15 +733,28 @@
 }
 
 /* =========================================================
-   PROFESSIONAL ACTIVITIES — NATURAL CARD HEIGHTS
+   PROFESSIONAL ACTIVITIES — COMPACT TWO-COLUMN LAYOUT
    ========================================================= */
 
 .activity-card-grid {
-    align-items: start;
+    display: block;
+    column-count: 2;
+    column-gap: 16px;
 }
 
 .activity-card-grid > article {
+    display: inline-block;
+    width: 100%;
     height: auto;
     min-height: 0;
-    align-self: start;
+    margin: 0 0 16px;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+    .activity-card-grid {
+        column-count: 1;
+    }
 }
