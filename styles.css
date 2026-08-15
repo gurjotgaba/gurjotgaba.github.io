@@ -731,3 +731,17 @@
         height: 48vh;
     }
 }
+
+/* =========================================================
+   PROFESSIONAL ACTIVITIES — NATURAL CARD HEIGHTS
+   ========================================================= */
+
+.activity-card-grid {
+    align-items: start;
+}
+
+.activity-card-grid > article {
+    height: auto;
+    min-height: 0;
+    align-self: start;
+}
