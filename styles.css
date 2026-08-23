@@ -806,3 +806,38 @@
         height: 240px;
     }
 }
+
+/* =========================================================
+   TEACHING PAGE — RESEARCH LAB & RESEARCH VISITORS
+   ========================================================= */
+
+/* Research Lab */
+.research-lab-section {
+    padding-top: 48px;
+    padding-bottom: 52px;
+    background: #eef5fa;
+}
+
+/* Research Visitors */
+.research-visitors-section {
+    padding-top: 52px;
+    padding-bottom: 52px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+}
+
+.research-visitors-section .compact-heading {
+    margin-bottom: 24px;
+}
+
+@media (max-width: 720px) {
+    .research-lab-section {
+        padding-top: 36px;
+        padding-bottom: 36px;
+    }
+
+    .research-visitors-section {
+        padding-top: 36px;
+        padding-bottom: 36px;
+    }
+}
