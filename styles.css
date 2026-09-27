@@ -841,3 +841,739 @@
         padding-bottom: 36px;
     }
 }
+
+/* =========================================================
+   GLOBAL RESEARCH NETWORK — HOME
+   ========================================================= */
+
+.research-network-section {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border-top: 1px solid rgba(16,41,67,.06);
+}
+
+
+/* ---------- Heading ---------- */
+
+.network-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 35px;
+    margin-bottom: 28px;
+}
+
+.network-heading > div:first-child {
+    max-width: 760px;
+}
+
+.network-intro {
+    max-width: 700px;
+    margin: 14px 0 0;
+    color: #65778b;
+    font-size: 1rem;
+}
+
+
+/* ---------- Interaction hint ---------- */
+
+.network-interaction-hint {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 9px 14px;
+
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+
+    color: #6a7b8d;
+
+    font-size: .74rem;
+    font-weight: 750;
+
+    box-shadow: 0 6px 18px rgba(16,41,67,.05);
+}
+
+.network-mobile-hint {
+    display: none;
+}
+
+.network-hint-dot {
+    position: relative;
+
+    width: 8px;
+    height: 8px;
+
+    flex: 0 0 8px;
+
+    background: var(--ink2);
+    border-radius: 50%;
+}
+
+.network-hint-dot::after {
+    content: "";
+
+    position: absolute;
+    inset: -1px;
+
+    border: 1px solid rgba(37,67,94,.42);
+    border-radius: 50%;
+
+    animation: networkHintPulse 2.8s ease-out infinite;
+}
+
+@keyframes networkHintPulse {
+
+    0% {
+        transform: scale(.8);
+        opacity: .75;
+    }
+
+    75%,
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+
+}
+
+
+/* ---------- Main component ---------- */
+
+.research-network {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 0;
+
+    min-height: 500px;
+
+    overflow: hidden;
+
+    background: #f9fbfc;
+
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+
+    box-shadow: 0 18px 48px rgba(16,41,67,.075);
+
+    transition: grid-template-columns .32s ease;
+}
+
+.research-network.panel-open {
+    grid-template-columns:
+        minmax(0,1.48fr)
+        minmax(315px,.52fr);
+}
+
+
+/* ---------- Map ---------- */
+
+.research-network-map-wrap {
+    position: relative;
+    min-width: 0;
+    min-height: 500px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(221,232,239,.28),
+            transparent 48%
+        ),
+        #f9fbfc;
+}
+
+.research-network-map {
+    width: 100%;
+    height: 500px;
+}
+
+.research-network-map svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ---------- World map ---------- */
+
+.network-world-land {
+    fill: #e7edf1;
+    stroke: #cbd6de;
+    stroke-width: .55;
+    vector-effect: non-scaling-stroke;
+}
+
+.network-world-border {
+    fill: none;
+    stroke: #d4dde4;
+    stroke-width: .35;
+    vector-effect: non-scaling-stroke;
+}
+
+
+/* ---------- Connections ---------- */
+
+.network-connection {
+    fill: none;
+
+    stroke: var(--ink2);
+    stroke-width: 1.25;
+
+    stroke-linecap: round;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    vector-effect: non-scaling-stroke;
+
+    transition: opacity .22s ease;
+}
+
+.network-connection.visible {
+    opacity: .34;
+}
+
+
+/* ---------- Collaboration nodes ---------- */
+
+.network-node {
+    cursor: pointer;
+    outline: none;
+}
+
+.network-node-halo {
+    fill: rgba(37,67,94,.08);
+
+    stroke: rgba(37,67,94,.13);
+    stroke-width: 1;
+
+    transform-box: fill-box;
+    transform-origin: center;
+
+    animation: networkNodePulse 3.1s ease-out infinite;
+}
+
+.network-node:nth-of-type(3n) .network-node-halo {
+    animation-delay: .7s;
+}
+
+.network-node:nth-of-type(4n) .network-node-halo {
+    animation-delay: 1.4s;
+}
+
+.network-node-core {
+    fill: var(--ink2);
+
+    stroke: #ffffff;
+    stroke-width: 1.7;
+
+    vector-effect: non-scaling-stroke;
+
+    transition:
+        r .18s ease,
+        fill .18s ease;
+}
+
+.network-node:hover .network-node-core,
+.network-node:focus .network-node-core,
+.network-node.active .network-node-core {
+    fill: var(--red);
+}
+
+.network-node:hover .network-node-core,
+.network-node:focus .network-node-core {
+    r: 6.3;
+}
+
+@keyframes networkNodePulse {
+
+    0% {
+        transform: scale(.7);
+        opacity: .52;
+    }
+
+    70%,
+    100% {
+        transform: scale(1.75);
+        opacity: 0;
+    }
+
+}
+
+
+/* ---------- Linköping hub ---------- */
+
+.network-hub {
+    cursor: pointer;
+}
+
+.network-hub-halo {
+    fill: rgba(166,103,19,.11);
+
+    stroke: rgba(166,103,19,.22);
+    stroke-width: 1;
+
+    transform-box: fill-box;
+    transform-origin: center;
+
+    animation: networkHubPulse 3.2s ease-out infinite;
+}
+
+.network-hub-core {
+    fill: var(--gold);
+
+    stroke: #ffffff;
+    stroke-width: 2;
+
+    vector-effect: non-scaling-stroke;
+}
+
+@keyframes networkHubPulse {
+
+    0% {
+        transform: scale(.75);
+        opacity: .65;
+    }
+
+    75%,
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+
+}
+
+
+/* ---------- Tooltip ---------- */
+
+.research-network-tooltip {
+    position: absolute;
+    z-index: 20;
+
+    width: max-content;
+    max-width: 270px;
+
+    padding: 10px 12px;
+
+    pointer-events: none;
+
+    background: rgba(16,41,67,.96);
+    color: #ffffff;
+
+    border-radius: 10px;
+
+    box-shadow: 0 12px 30px rgba(8,27,45,.22);
+
+    font-size: .75rem;
+    line-height: 1.4;
+
+    transform: translate(13px,-50%);
+}
+
+.research-network-tooltip strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    font-size: .8rem;
+}
+
+.research-network-tooltip span {
+    display: block;
+
+    color: rgba(255,255,255,.72);
+}
+
+.research-network-tooltip small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: rgba(255,255,255,.9);
+
+    font-size: .66rem;
+    font-weight: 750;
+}
+
+
+/* ---------- Key ---------- */
+
+.research-network-key {
+    position: absolute;
+    left: 17px;
+    bottom: 15px;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 8px 12px;
+
+    background: rgba(255,255,255,.93);
+
+    border: 1px solid rgba(216,225,232,.95);
+    border-radius: 999px;
+
+    box-shadow: 0 5px 18px rgba(16,41,67,.07);
+
+    color: #697a8c;
+
+    font-size: .68rem;
+    font-weight: 700;
+
+    backdrop-filter: blur(8px);
+}
+
+.research-network-key span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.research-network-key i {
+    width: 8px;
+    height: 8px;
+
+    display: block;
+
+    border-radius: 50%;
+}
+
+.network-key-hub {
+    background: var(--gold);
+
+    box-shadow:
+        0 0 0 4px rgba(166,103,19,.13);
+}
+
+.network-key-node {
+    background: var(--ink2);
+
+    box-shadow:
+        0 0 0 4px rgba(37,67,94,.10);
+}
+
+
+/* ---------- Details panel ---------- */
+
+.research-network-panel {
+    position: relative;
+
+    min-width: 0;
+    width: 100%;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    opacity: 0;
+
+    transform: translateX(22px);
+
+    transition:
+        opacity .25s ease,
+        transform .3s ease;
+}
+
+.research-network.panel-open
+.research-network-panel {
+    opacity: 1;
+    transform: translateX(0);
+
+    border-left: 1px solid var(--line);
+}
+
+.research-network-panel-close {
+    position: absolute;
+    z-index: 6;
+
+    top: 15px;
+    right: 16px;
+
+    width: 35px;
+    height: 35px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    border: 1px solid var(--line);
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: var(--ink);
+
+    font-size: 1.25rem;
+
+    cursor: pointer;
+
+    transition: .18s;
+}
+
+.research-network-panel-close:hover {
+    color: var(--red);
+    border-color: rgba(142,38,56,.35);
+}
+
+.network-panel-inner {
+    height: 500px;
+
+    overflow-y: auto;
+
+    padding: 30px 27px 32px;
+}
+
+.network-panel-location {
+    margin: 0 45px 5px 0;
+
+    color: var(--red);
+
+    font-size: .67rem;
+    font-weight: 850;
+
+    letter-spacing: .10em;
+    text-transform: uppercase;
+}
+
+.network-panel-title {
+    margin: 0 40px 7px 0;
+
+    color: var(--ink);
+
+    font-family: Georgia,"Times New Roman",serif;
+
+    font-size: 1.45rem;
+    line-height: 1.2;
+}
+
+.network-panel-count {
+    margin: 0 0 21px;
+
+    color: #788697;
+
+    font-size: .78rem;
+}
+
+.network-person {
+    padding: 17px 0;
+
+    border-top: 1px solid var(--line);
+}
+
+.network-person h4 {
+    margin: 0 0 9px;
+
+    color: var(--ink);
+
+    font-size: .94rem;
+}
+
+.network-themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.network-themes span {
+    display: inline-flex;
+
+    padding: 5px 8px;
+
+    background: var(--soft);
+
+    border-radius: 999px;
+
+    color: #52697e;
+
+    font-size: .66rem;
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .network-heading {
+        display: block;
+    }
+
+    .network-interaction-hint {
+        width: max-content;
+
+        margin-top: 18px;
+    }
+
+    .research-network,
+    .research-network.panel-open {
+        grid-template-columns: 1fr;
+    }
+
+    .research-network-map-wrap {
+        min-height: 440px;
+    }
+
+    .research-network-map {
+        height: 440px;
+    }
+
+    .research-network-panel {
+        display: none;
+
+        opacity: 1;
+        transform: none;
+
+        border-left: 0;
+    }
+
+    .research-network.panel-open
+    .research-network-panel {
+        display: block;
+
+        border-left: 0;
+        border-top: 1px solid var(--line);
+    }
+
+    .network-panel-inner {
+        height: auto;
+        max-height: 430px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 720px) {
+
+    .network-heading {
+        margin-bottom: 20px;
+    }
+
+    .network-intro {
+        font-size: .91rem;
+    }
+
+    .network-desktop-hint {
+        display: none;
+    }
+
+    .network-mobile-hint {
+        display: inline;
+    }
+
+    .network-interaction-hint {
+        padding: 8px 11px;
+
+        font-size: .69rem;
+    }
+
+    .research-network {
+        min-height: 360px;
+
+        border-radius: 18px;
+    }
+
+    .research-network-map-wrap {
+        min-height: 360px;
+    }
+
+    .research-network-map {
+        height: 360px;
+    }
+
+    .research-network-tooltip {
+        display: none;
+    }
+
+    .research-network-key {
+        left: 9px;
+        bottom: 9px;
+
+        gap: 10px;
+
+        padding: 6px 8px;
+
+        font-size: .6rem;
+    }
+
+    .network-panel-inner {
+        max-height: none;
+
+        padding: 26px 20px 28px;
+    }
+
+}
+
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .network-hint-dot::after,
+    .network-node-halo,
+    .network-hub-halo {
+        animation: none;
+    }
+
+    .research-network,
+    .research-network-panel {
+        transition: none;
+    }
+
+}
+
+
+/* =========================================================
+   GLOBAL RESEARCH NETWORK — SVG MAP LAYERS
+   ========================================================= */
+
+.network-map-background {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: fill;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+.network-map-overlay {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+}
+
+.network-map-overlay .network-node,
+.network-map-overlay .network-hub {
+    pointer-events: all;
+}
+
+.network-map-overlay .network-node:focus,
+.network-map-overlay .network-hub:focus {
+    outline: none;
+}
