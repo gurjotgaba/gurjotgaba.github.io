@@ -1815,4 +1815,593 @@ if (researchNetworkMap) {
         }
     );
 
+
+    /* =====================================================
+       V2 — SEQUENTIAL RESEARCH NETWORK ANIMATION
+       ===================================================== */
+
+    const liveInstitution =
+        document.querySelector('#network-live-institution');
+
+    const liveLocation =
+        document.querySelector('#network-live-location');
+
+    const liveProgress =
+        document.querySelector('#network-live-progress');
+
+    const reducedMotion =
+        window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        );
+
+
+    /*
+     * Reuse the SVG paths created by the existing renderer.
+     * No additional collaborator data is required.
+     */
+
+    const tourConnections =
+        [...connectionLayer.querySelectorAll(
+            '.network-connection'
+        )];
+
+
+    /*
+     * A single travelling particle.
+     */
+
+    const travelParticle =
+        makeSvgElement(
+            'circle',
+            {
+                cx: hubPoint.x,
+                cy: hubPoint.y,
+                r: 4.2
+            }
+        );
+
+    travelParticle.classList.add(
+        'network-travel-particle'
+    );
+
+    travelParticle.style.display = 'none';
+
+    svg.appendChild(travelParticle);
+
+
+    /* ---------- Animation state ---------- */
+
+    let tourIndex = 0;
+
+    let tourTimer = null;
+
+    let tourFrame = null;
+
+    let tourToken = 0;
+
+    let touring = false;
+
+    let activeTourPath = null;
+
+    let activeTourNode = null;
+
+
+    const TRAVEL_DURATION = 1550;
+
+    const ARRIVAL_DURATION = 850;
+
+    const BETWEEN_CONNECTIONS = 350;
+
+
+    /* ---------- Helpers ---------- */
+
+    function clearTourVisuals() {
+
+        tourConnections.forEach(path => {
+
+            path.classList.remove('touring');
+
+            path.style.strokeDasharray = '';
+
+            path.style.strokeDashoffset = '';
+
+        });
+
+
+        nodeLayer.querySelectorAll(
+            '.network-node.arrived'
+        ).forEach(node => {
+
+            node.classList.remove('arrived');
+
+        });
+
+
+        travelParticle.style.display = 'none';
+
+        activeTourPath = null;
+
+        activeTourNode = null;
+
+    }
+
+
+    function updateLiveStatus(node, index) {
+
+        if (liveInstitution) {
+
+            liveInstitution.textContent =
+                node.institution;
+
+        }
+
+        if (liveLocation) {
+
+            liveLocation.textContent =
+                node.location;
+
+        }
+
+        if (liveProgress) {
+
+            liveProgress.textContent =
+                `${String(index + 1).padStart(2, '0')} / ` +
+                `${String(RESEARCH_NETWORK.length).padStart(2, '0')}`;
+
+        }
+
+    }
+
+
+    /* ---------- Stop automatic animation ---------- */
+
+    function pauseNetworkTour() {
+
+        touring = false;
+
+        /*
+         * Invalidates any animation callback that
+         * may already have been scheduled.
+         */
+
+        tourToken++;
+
+
+        if (tourTimer !== null) {
+
+            clearTimeout(tourTimer);
+
+            tourTimer = null;
+
+        }
+
+
+        if (tourFrame !== null) {
+
+            cancelAnimationFrame(tourFrame);
+
+            tourFrame = null;
+
+        }
+
+
+        clearTourVisuals();
+
+    }
+
+
+    /* ---------- Animate one connection ---------- */
+
+    function animateTourConnection() {
+
+        if (
+            !touring ||
+            reducedMotion.matches ||
+            networkContainer.classList.contains('panel-open')
+        ) {
+
+            pauseNetworkTour();
+            return;
+
+        }
+
+
+        clearTourVisuals();
+
+
+        const currentIndex =
+            tourIndex % RESEARCH_NETWORK.length;
+
+
+        const node =
+            RESEARCH_NETWORK[currentIndex];
+
+
+        const path =
+            tourConnections.find(
+                item => item.dataset.node === node.id
+            );
+
+
+        const marker =
+            [...nodeLayer.querySelectorAll(
+                '.network-node'
+            )].find(
+                item => item.dataset.networkId === node.id
+            );
+
+
+        tourIndex =
+            (tourIndex + 1) % RESEARCH_NETWORK.length;
+
+
+        if (!path || !marker) {
+
+            tourTimer = setTimeout(
+                animateTourConnection,
+                250
+            );
+
+            return;
+
+        }
+
+
+        activeTourPath = path;
+
+        activeTourNode = marker;
+
+
+        updateLiveStatus(
+            node,
+            currentIndex
+        );
+
+
+        /*
+         * Measure the actual curved SVG path.
+         */
+
+        const length =
+            path.getTotalLength();
+
+
+        path.style.strokeDasharray =
+            `${length} ${length}`;
+
+        path.style.strokeDashoffset =
+            `${length}`;
+
+
+        path.classList.add('touring');
+
+
+        travelParticle.style.display = '';
+
+
+        /*
+         * The particle starts at the LiU hub.
+         */
+
+        const startPoint =
+            path.getPointAtLength(0);
+
+
+        travelParticle.setAttribute(
+            'cx',
+            startPoint.x
+        );
+
+        travelParticle.setAttribute(
+            'cy',
+            startPoint.y
+        );
+
+
+        const token = tourToken;
+
+        let startTime = null;
+
+
+        function animateFrame(timestamp) {
+
+            if (
+                !touring ||
+                token !== tourToken
+            ) {
+
+                return;
+
+            }
+
+
+            if (startTime === null) {
+
+                startTime = timestamp;
+
+            }
+
+
+            const elapsed =
+                timestamp - startTime;
+
+
+            const progress =
+                Math.min(
+                    elapsed / TRAVEL_DURATION,
+                    1
+                );
+
+
+            /*
+             * Smooth ease-in/ease-out.
+             */
+
+            const eased =
+                progress < .5
+                    ? 2 * progress * progress
+                    : 1 -
+                      Math.pow(-2 * progress + 2, 2) / 2;
+
+
+            /*
+             * Gradually reveal the connection.
+             */
+
+            path.style.strokeDashoffset =
+                `${length * (1 - eased)}`;
+
+
+            /*
+             * Move the illuminated particle along
+             * the actual SVG curve.
+             */
+
+            const point =
+                path.getPointAtLength(
+                    length * eased
+                );
+
+
+            travelParticle.setAttribute(
+                'cx',
+                point.x
+            );
+
+            travelParticle.setAttribute(
+                'cy',
+                point.y
+            );
+
+
+            if (progress < 1) {
+
+                tourFrame =
+                    requestAnimationFrame(
+                        animateFrame
+                    );
+
+            } else {
+
+                tourFrame = null;
+
+                travelParticle.style.display =
+                    'none';
+
+
+                /*
+                 * Brief destination pulse.
+                 */
+
+                marker.classList.add(
+                    'arrived'
+                );
+
+
+                tourTimer = setTimeout(
+                    () => {
+
+                        if (
+                            token !== tourToken ||
+                            !touring
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        marker.classList.remove(
+                            'arrived'
+                        );
+
+
+                        path.classList.remove(
+                            'touring'
+                        );
+
+
+                        tourTimer = setTimeout(
+                            animateTourConnection,
+                            BETWEEN_CONNECTIONS
+                        );
+
+                    },
+                    ARRIVAL_DURATION
+                );
+
+            }
+
+        }
+
+
+        tourFrame =
+            requestAnimationFrame(
+                animateFrame
+            );
+
+    }
+
+
+    /* ---------- Start or resume ---------- */
+
+    function resumeNetworkTour() {
+
+        if (
+            touring ||
+            reducedMotion.matches ||
+            document.hidden ||
+            networkContainer.classList.contains('panel-open')
+        ) {
+
+            return;
+
+        }
+
+
+        touring = true;
+
+        tourToken++;
+
+
+        tourTimer = setTimeout(
+            animateTourConnection,
+            650
+        );
+
+    }
+
+
+    /* =====================================================
+       USER INTERACTION TAKES PRIORITY
+       ===================================================== */
+
+    /*
+     * Hovering over the map pauses the automatic tour.
+     * Existing node hover interactions remain unchanged.
+     */
+
+    networkMapWrap.addEventListener(
+        'pointerenter',
+        pauseNetworkTour
+    );
+
+
+    networkMapWrap.addEventListener(
+        'pointerleave',
+        resumeNetworkTour
+    );
+
+
+    /*
+     * Keyboard navigation also pauses the tour.
+     */
+
+    nodeLayer.addEventListener(
+        'focusin',
+        pauseNetworkTour
+    );
+
+
+    nodeLayer.addEventListener(
+        'focusout',
+        () => {
+
+            if (!networkContainer.classList.contains('panel-open')) {
+
+                resumeNetworkTour();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Selecting an institution stops automatic playback.
+     */
+
+    nodeLayer.addEventListener(
+        'click',
+        pauseNetworkTour,
+        true
+    );
+
+
+    /*
+     * Resume after closing the details panel,
+     * provided the visitor is not hovering over the map.
+     */
+
+    panelClose?.addEventListener(
+        'click',
+        () => {
+
+            if (
+                !networkMapWrap.matches(':hover') ||
+                window.matchMedia('(hover: none)').matches
+            ) {
+
+                resumeNetworkTour();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Avoid running animations in background tabs.
+     */
+
+    document.addEventListener(
+        'visibilitychange',
+        () => {
+
+            if (document.hidden) {
+
+                pauseNetworkTour();
+
+            } else if (
+                !networkMapWrap.matches(':hover')
+            ) {
+
+                resumeNetworkTour();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Respect operating-system motion preferences.
+     */
+
+    reducedMotion.addEventListener(
+        'change',
+        () => {
+
+            if (reducedMotion.matches) {
+
+                pauseNetworkTour();
+
+            } else {
+
+                resumeNetworkTour();
+
+            }
+
+        }
+    );
+
+
+    /* ---------- Initial playback ---------- */
+
+    if (!reducedMotion.matches) {
+
+        resumeNetworkTour();
+
+    }
+
 }

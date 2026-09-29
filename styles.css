@@ -1577,3 +1577,297 @@
 .network-map-overlay .network-hub:focus {
     outline: none;
 }
+
+/* =========================================================
+   GLOBAL RESEARCH NETWORK — V2 VISUAL ENHANCEMENT
+   ========================================================= */
+
+/* More compact presentation */
+
+.research-network,
+.research-network-map-wrap {
+    min-height: 370px;
+}
+
+.research-network-map {
+    height: 370px;
+}
+
+.network-panel-inner {
+    height: 370px;
+}
+
+
+/* Slightly richer geographical contrast */
+
+.research-network-map-wrap {
+    background:
+        radial-gradient(
+            ellipse at 51% 38%,
+            rgba(207,225,237,.36),
+            transparent 66%
+        ),
+        #f7fafc;
+}
+
+.network-map-background {
+    filter: contrast(1.12) saturate(.92);
+}
+
+
+/* Increase marker visibility */
+
+.network-node-core {
+    r: 6;
+    fill: #25435e;
+    stroke: #ffffff;
+    stroke-width: 2;
+}
+
+.network-node:hover .network-node-core,
+.network-node:focus .network-node-core,
+.network-node.active .network-node-core {
+    r: 7.5;
+    fill: #8e2638;
+}
+
+.network-hub-core {
+    r: 9;
+    fill: #b77a20;
+    stroke: white;
+    stroke-width: 2.5;
+}
+
+.network-hub-halo {
+    fill: rgba(183,122,32,.15);
+    stroke: rgba(183,122,32,.35);
+}
+
+
+/* Animated connection */
+
+.network-connection {
+    stroke: #a66713;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+
+    opacity: 0;
+
+    transition: opacity .3s ease;
+}
+
+.network-connection.touring {
+    opacity: .75;
+}
+
+.network-connection.visible {
+    opacity: .68;
+}
+
+
+/* Travelling particle */
+
+.network-travel-particle {
+    fill: #c68c2e;
+
+    stroke: #ffffff;
+    stroke-width: 1.5;
+
+    filter:
+        drop-shadow(0 0 3px rgba(198,140,46,.65));
+
+    pointer-events: none;
+}
+
+
+/* Destination pulse */
+
+.network-node.arrived .network-node-core {
+    fill: #b77a20;
+}
+
+.network-node.arrived .network-node-halo {
+    fill: rgba(183,122,32,.2);
+    stroke: rgba(183,122,32,.45);
+
+    animation: networkArrivalPulse .8s ease-out;
+}
+
+@keyframes networkArrivalPulse {
+
+    0% {
+        transform: scale(.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   LIVE ACTIVITY LABEL
+   ========================================================= */
+
+.network-live-status {
+    position: absolute;
+
+    top: 16px;
+    left: 17px;
+
+    z-index: 12;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    max-width: calc(100% - 34px);
+
+    padding: 11px 14px;
+
+    background: rgba(255,255,255,.94);
+
+    border: 1px solid rgba(216,225,232,.9);
+    border-radius: 13px;
+
+    box-shadow: 0 8px 24px rgba(16,41,67,.075);
+
+    backdrop-filter: blur(10px);
+
+    pointer-events: none;
+}
+
+.network-live-indicator {
+    width: 9px;
+    height: 9px;
+
+    flex: 0 0 9px;
+
+    border-radius: 50%;
+
+    background: #b77a20;
+
+    box-shadow:
+        0 0 0 4px rgba(183,122,32,.13);
+}
+
+.network-live-text {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    gap: 2px;
+}
+
+.network-live-text small {
+    color: #9a6b27;
+
+    font-size: .58rem;
+    font-weight: 850;
+
+    letter-spacing: .08em;
+}
+
+.network-live-text strong {
+    color: #102943;
+
+    font-size: .78rem;
+    line-height: 1.25;
+}
+
+.network-live-text > span {
+    color: #77889a;
+
+    font-size: .68rem;
+}
+
+.network-live-progress {
+    margin-left: 10px;
+
+    color: #8291a0;
+
+    font-size: .65rem;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .research-network,
+    .research-network-map-wrap {
+        min-height: 350px;
+    }
+
+    .research-network-map {
+        height: 350px;
+    }
+
+    .network-panel-inner {
+        height: auto;
+        max-height: 390px;
+    }
+
+}
+
+@media (max-width: 720px) {
+
+    .research-network,
+    .research-network-map-wrap {
+        min-height: 300px;
+    }
+
+    .research-network-map {
+        height: 300px;
+    }
+
+    .network-live-status {
+        top: 10px;
+        left: 10px;
+
+        gap: 8px;
+
+        padding: 8px 10px;
+    }
+
+    .network-live-text small {
+        font-size: .52rem;
+    }
+
+    .network-live-text strong {
+        font-size: .7rem;
+    }
+
+    .network-live-text > span {
+        font-size: .61rem;
+    }
+
+    .network-live-progress {
+        font-size: .6rem;
+        margin-left: 3px;
+    }
+
+}
+
+
+/* Respect accessibility preferences */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .network-travel-particle {
+        display: none;
+    }
+
+    .network-node.arrived .network-node-halo {
+        animation: none;
+    }
+
+}
