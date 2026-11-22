@@ -1,4 +1,4 @@
-# Gurjot Singh Gaba — Final Academic Website
+# Gurjot Singh Gaba — Academic and Research Profile
 
 ## Deployment
 
