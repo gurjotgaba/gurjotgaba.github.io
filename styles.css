@@ -172,6 +172,11 @@
         grid-row: 3;
     }
 
+    .career-item:nth-of-type(10) {
+        grid-column: 5;
+        grid-row: 3;
+    }
+
     /* ---------- CONNECTORS ---------- */
 
     .career-item::after {
@@ -198,7 +203,8 @@
     .career-item:nth-of-type(2)::after,
     .career-item:nth-of-type(4)::after,
     .career-item:nth-of-type(6)::after,
-    .career-item:nth-of-type(8)::after {
+    .career-item:nth-of-type(8)::after,
+    .career-item:nth-of-type(10)::after {
         bottom: auto;
         top: -30px;
     }
